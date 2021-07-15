@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const templatesDir = path.resolve(__dirname, "../templates");
 
-//Filtecdrs through the employees by role and map them to their respective HTML divs, then it pushes the div to the HTML array
+//Filters through the employees by role and map them to their respective HTML divs, then it pushes the div to the HTML array
 const renderHTML = employees => {
     const html = [];
   
