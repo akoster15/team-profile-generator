@@ -43,7 +43,7 @@ const questions = [
         {
             type: "input",
             name: "officeNumber",
-            message: "What is the manager's office number? (Required)",
+            message: "What is the manager's office number?",
             validate: officeNumber => {
                 if (officeNumber) {
                   return true;
@@ -60,7 +60,7 @@ const questions = [
         {
             type: "input",
             name: "github",
-            message: "What is the engineer's Github Username? (Required)",
+            message: "What is the engineer's Github Username?",
             validate: github => {
                 if (github) {
                   return true;
@@ -78,7 +78,7 @@ const questions = [
         {
             type: "input",
             name: "school",
-            message: "What school is the intern from? (Required)",
+            message: "What school is the intern from?",
             validate: school => {
                 if (school) {
                   return true;
