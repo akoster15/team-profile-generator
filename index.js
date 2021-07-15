@@ -160,8 +160,7 @@ const questions = [
         .prompt({
             type: "confirm",
             name: "addEmployee",
-            message: "Would you like to add an employee? (Required)"
-
+            message: "Would you like to add an employee?"
         }).then(async (response) => {
             var createEmployee = response.addEmployee;
             if (await createEmployee === true) {
