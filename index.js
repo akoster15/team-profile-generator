@@ -6,12 +6,8 @@ const filePath = path.join(fileDirectory, "index.html");
 
 //Import classes
 const Engineer = require("./lib/Engineer");
-const Tntern = require("./lib/Intern");
+const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 const htmlGenerator = require("./src/htmlGenerator");
 const employees = [];
-
-
-
-
 
