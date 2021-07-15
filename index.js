@@ -1,7 +1,9 @@
 //Import node modules
-const fs = require("fs");
 const inquirer = require("inquirer");
-const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+const fileDirectory = path.resolve(__dirname, "dist");
+const filePath = path.join(fileDirectory, "index.html");
 
 //Import classes
 const Engineer = require("./lib/Engineer");
