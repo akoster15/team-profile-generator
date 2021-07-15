@@ -10,7 +10,7 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 const htmlGenerator = require("./src/htmlGenerator");
-const membersArray = [];
+let employeesArr = [];
 
 
 //Questions array for all employees
