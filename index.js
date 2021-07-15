@@ -10,210 +10,180 @@ const Manager = require("./lib/Manager");
 const htmlGenerator = require("./src/htmlGenerator");
 const membersArray = [];
 
-//Import html generator function
-const htmlGenerator = require("./src/htmlGenerator");
 
-//Manager's Questions List
-const managerQuestions = () => {
-    return inquirer
-      .prompt([
+//Questions array for all employees
+const questions = [           
+    {
+        type: "input",
+        name: "name",
+        message: "What is the name of this employee?"
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is the ID of this employee?"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is this employee's email?"
+    },
+    {
+        type: "list",
+        name: "role",
+        message: "What role does this employee have?",
+        choices: ["Engineer", "Intern", "Manager"]
+    }
+    ]
+
+    //Questions for manager
+    managerQuestions = [
         {
-          type: "input",
-          name: "name",
-          message: "Who is the manager of this team?",
-          validate: function (input) {
-            if (input === "") {
-              console.log("Please enter the manager's name");
-              return false;
-            } else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "id",
-          message: "What is the manger's ID?",
-          validate: function (input) {
-            if (isNaN(input)) {
-              console.log("Please enter the manager's ID");
-              return false;
-            } else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "email",
-          message: "What is the manager's email?",
-          validate: function (input) {
-            let emailVerify = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input);
-            if (input === "") {
-              console.log("Please enter the manager's email");
-              return false;
-            } else if(!emailVerify) {
-              console.log("Please enter a valid email address");
-              return false;
-            }
-            else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "officeNumber",
-          message: "What is the manager's office number?",
-          validate: function (input) {
-            if (isNaN(input)) {
-              console.log("Please enter the manager's office number");
-              return false;
-            } else {
-              return true;
-            }
-          },
-        },
-      ])
-      .then((data) => {
-        let { name, id, email, officeNumber } = data;
-        const manager = new Manager(name, id, email, officeNumber);
-        membersArray.push(manager);
-      });
-  };
-  
-  //Intern's and Engineer's Questions List
-  const employeeQuestions = () => {
-    return inquirer
-      .prompt([
-        {
-          type: "list",
-          name: "role",
-          message: "Please choose your employee's role.",
-          choices: ["Engineer", "Intern"],
-        },
-        {
-          type: "input",
-          name: "name",
-          message: "What's the name of the employee?",
-          validate: function (input) {
-            if (input === "") {
-              console.log("Please enter employee's name.");
-              return false;
-            } else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "id",
-          message: "What is the employee's ID?",
-          validate: function (input) {
-            if (isNaN(input)) {
-              console.log("Please enter the employee's ID.");
-              return false;
-            } else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "email",
-          message: "What is the employee's email?",
-          validate: function (input) {
-            let emailVerify = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input);
-            if (input === "") {
-              console.log("Please enter the employee's email.");
-              return false;
-            } else if (!emailVerify) {
-              console.log("Please enter a valid email address");
-              return false;
-            }
-            else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "github",
-          message: "What is the employee's github username?",
-          when: (input) => input.role === "Engineer",
-          validate: async function (input) {
-            let githubUrl = `https://api.github.com/users/${input}`;
-            try {
-              await axios.get(githubUrl);
-              return true;
-            } catch {
-              return "GitHub username is not found";
-            }
-          },
-        },
-        {
-          type: "input",
-          name: "school",
-          message: "What is the intern's school?",
-          when: (input) => input.role === "Intern",
-          validate: function (input) {
-            if (input === "") {
-              console.log("Please enter the intern's school.");
-              return false;
-            } else {
-              return true;
-            }
-          },
-        },
-        {
-          type: "confirm",
-          name: "addMoreEmployees",
-          message: "Would you like to add more employees? (type 'Yes' or No)",
-          default: false,
-        },
-      ])
-      .then((data) => {
-        let { role, name, id, email, github, school, addMoreEmployees } = data;
-        let employeeType;
-        if (role === "Engineer") {
-          employeeType = new Engineer(name, id, email, github);
-        } else if (role === "Intern") {
-          employeeType = new Intern(name, id, email, school);
+            type: "input",
+            name: "officeNumber",
+            message: "What is the manager's office number? (Required)",
+            validate: officeNumber => {
+                if (officeNumber) {
+                  return true;
+                } else {
+                  console.log("Please enter an office number!");
+                  return false;
+                }
+              }
         }
-        membersArray.push(employeeType);
-        if (addMoreEmployees) {
-          return employeeQuestions(membersArray);
+    ]
+
+    //Questions for engineer 
+    engineerQuestions = [
+        {
+            type: "input",
+            name: "github",
+            message: "What is the engineer's Github Username? (Required)",
+            validate: github => {
+                if (github) {
+                  return true;
+                } else {
+                  console.log("Please enter a GitHub username!");
+                  return false;
+                }
+              }
         }
-        return membersArray;
-      });
-  };
+    ]
 
-//Generate index html file.
-function writeFile(data) {
-    fs.writeFile("./dist/index.html", data, (err) => {
-      if (err) {
-        console.log(err, "Something went wrong. Please try again.");
-        return;
-      } else {
-        console.log("Your team profile has been successfully created.");
-      }
-    });
-  }
+    //Questions for intern
+    internQuestions = [
 
-  //initialize function
-  function init() {
-    managerQuestions()
-      .then(employeeQuestions)
-      .then((membersArray) => {
-        return htmlGenerator(membersArray);
-      })
-      .then((cardsRender) => {
-        return writeFile(cardsRender);
-      })
-      .catch((err) => {
-        console.log(err, "Something went wrong. Please try again");
-      });
-  }
+        {
+            type: "input",
+            name: "school",
+            message: "What school is the intern from? (Required)",
+            validate: school => {
+                if (school) {
+                  return true;
+                } else {
+                  console.log("Please enter a school name!");
+                  return false;
+                }
+              }
+        }
+    ]
 
-//Call to initialize app
-init();
+    //Initialize application
+    const init = () => {
+        if (fs.existsSync(filePath)) {
+            inquirer.prompt({
+                type: "confirm",
+                message: "It looks like the index.html file in the 'dist' folder already exists. Do you want to overwrite it?",
+                name: "overwrite"
+            }).then(async (response) => {
+    
+                let overwrite = response.overwrite;
+                if (await overwrite === true) {
+                    console.log("Please enter your team information:")
+                    newEmployee()
+                } else if (await overwrite === false) {
+                    console.log("Your index.html file in the 'dist' folder will not be overwritten. Please move the current index.html file to another folder before restarting.")
+                }
+            })
+        } else {
+            console.log("Welcome to the team profile generator. Please enter your team information below:")
+            newEmployee()
+        }
+    };   
+
+    //Create new employees
+    const newEmployee = async () => {
+        await inquirer.prompt(questions)
+          .then((response) => {
+            let name = response.name;
+            let id = response.id;
+            let email = response.email;
+            let role = response.role;
+            let officeNumber;
+            let github;
+            let school;
+
+            if (role === "Engineer") {
+            inquirer.prompt(engineerQuestions).then((response) =>{
+                github = response.github;
+                let employee = new Engineer(name, id, email, github);
+                employeesArr.push(employee);
+                addEmployee(employeesArr);
+                });
+            }
+            else if (role === "Manager") {
+                inquirer.prompt(managerQuestions).then((response) =>{
+                        officeNumber = response.officeNumber;
+                        let employee = new Manager(name, id, email, officeNumber);
+                        employeesArr.push(employee);
+                        addEmployee(employeesArr);
+                    });
+                }
+            else if (role === "Intern") {
+                inquirer.prompt(internQuestions).then((response) =>{
+                        school = response.school;
+                        let employee = new Intern(name, id, email, school);
+                        employeesArr.push(employee);
+                        addEmployee(employeesArr);
+                    });
+            }
+
+        });    
+    
+    };
+
+    //Ask user if they want to add a new employee
+    const addEmployee = async (array) => {
+       await inquirer
+        .prompt({
+            type: "confirm",
+            name: "addEmployee",
+            message: "Would you like to add an employee? (Required)"
+
+        }).then(async (response) => {
+            var createEmployee = response.addEmployee;
+            if (await createEmployee === true) {
+                newEmployee();
+            } 
+            else if (await createEmployee === false) {
+
+            if (!fs.existsSync(fileDirectory)) {
+                fs.mkdirSync(fileDirectory)
+            }
+
+            
+            fs.writeFile(filePath, renderHTML(array), (err) => {
+        
+                if (err) {
+                    return console.log(err);
+                }
+                
+                // Success message
+                console.log("Your index.html file has been created in the 'dist' folder!");
+            });
+
+        }
+    })
+};
+    //Initialize app
+    init();
