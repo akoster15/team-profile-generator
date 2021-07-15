@@ -4,9 +4,9 @@ const inquirer = require("inquirer");
 const axios = require("axios");
 
 //Import classes
-const Engineer = require("./lib/Engineer.test");
-const Intern = require("./lib/Intern.test");
-const Manager = require("./lib/Manager.test");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
 const htmlGenerator = require("./src/htmlGenerator");
 const members = [];
 
