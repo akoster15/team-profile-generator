@@ -157,3 +157,5 @@ const newEmployee = async () => {
 
 };
 
+//Call to initialize app
+init();
