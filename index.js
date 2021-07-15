@@ -115,3 +115,45 @@ const init = () => {
       newEmployee()
   }
 };   
+
+//Add new employees
+const newEmployee = async () => {
+  await inquirer.prompt(questions)
+    .then((response) => {
+      let name = response.name;
+      let id = response.id;
+      let email = response.email;
+      let role = response.role;
+      let officeNumber;
+      let github;
+      let school;
+
+      if (role === "Engineer") {
+      inquirer.prompt(engineerQuestions).then((response) =>{
+          github = response.github;
+          let employee = new Engineer(name, id, email, github);
+          employeesArr.push(employee);
+          addEmployee(employeesArr);
+          });
+      }
+      else if (role === "Manager") {
+          inquirer.prompt(managerQuestions).then((response) =>{
+                  officeNumber = response.officeNumber;
+                  let employee = new Manager(name, id, email, officeNumber);
+                  employeesArr.push(employee);
+                  addEmployee(employeesArr);
+              });
+          }
+      else if (role === "Intern") {
+          inquirer.prompt(internQuestions).then((response) =>{
+                  school = response.school;
+                  let employee = new Intern(name, id, email, school);
+                  employeesArr.push(employee);
+                  addEmployee(employeesArr);
+              });
+      }
+
+  });    
+
+};
+
