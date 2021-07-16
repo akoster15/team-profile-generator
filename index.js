@@ -135,13 +135,24 @@ function addIntern() {
         },
     ])
     .then((responses) => {
-        var manager = new Manager(
-            responses.managerName,
-            responses.managerId,
-            responses.managerEmail,
-            responses.managerOfficeNum
+        var intern = new Intern(
+            responses.internName,
+            responses.internId,
+            responses.internEmail,
+            responses.internSchool
         );
         employees.push(manager)
         employeeType()
     });
 }
+
+//Finish App
+function finishApp() {
+    const makeHTML = generateHTML(employees);
+    fs.writeFile("./dist/index.html", makeHTML, (err) =>
+        err ? console.log(err) : console.log("Your list of employees has been created!")
+    );
+}
+
+//Call to start app
+employeeType();
