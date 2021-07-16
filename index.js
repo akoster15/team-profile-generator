@@ -43,31 +43,31 @@ function addEngineer() {
     inquirer.prompt([
         {
             type: "input",
-            name: "engineerName",
+            name: "name",
             message: "What is the engineer's name?"
         },
         {
             type: "input",
-            name: "engineerId",
+            name: "id",
             message: "What is the engineer's ID number?",
         },
         {
             type: "input",
-            name: "engineerEmail",
+            name: "email",
             message: "What is the engineer's email address?",
         },
         {
             type: "input",
-            name: "engineerGithub",
+            name: "github",
             message: "What is the engineer's Github username?",
         },
     ])
     .then((responses) => {
         var engineer = new Engineer(
-            responses.engineerName,
-            responses.engineerId,
-            responses.engineerEmail,
-            responses.engineerGithub
+            responses.name,
+            responses.id,
+            responses.email,
+            responses.github
         );
         employees.push(engineer)
         employeeType()
@@ -79,31 +79,31 @@ function addEngineer() {
     inquirer.prompt([
         {
             type: "input",
-            name: "managerName",
+            name: "name",
             message: "What is the manager's name?"
         },
         {
             type: "input",
-            name: "managerId",
+            name: "id",
             message: "What is the manager's ID number?",
         },
         {
             type: "input",
-            name: "managerEmail",
+            name: "email",
             message: "What is the manager's email address?",
         },
         {
             type: "input",
-            name: "managerOfficeNum",
+            name: "officeNum",
             message: "What is the manager's office number?",
         },
     ])
     .then((responses) => {
         var manager = new Manager(
-            responses.managerName,
-            responses.managerId,
-            responses.managerEmail,
-            responses.managerOfficeNum
+            responses.name,
+            responses.id,
+            responses.email,
+            responses.officeNum
         );
         employees.push(manager)
         employeeType()
@@ -115,33 +115,33 @@ function addIntern() {
     inquirer.prompt([
         {
             type: "input",
-            name: "internName",
+            name: "name",
             message: "What is the intern's name?"
         },
         {
             type: "input",
-            name: "internId",
+            name: "id",
             message: "What is the intern's ID number?",
         },
         {
             type: "input",
-            name: "internEmail",
+            name: "email",
             message: "What is the intern's email address?",
         },
         {
             type: "input",
-            name: "internSchool",
+            name: "school",
             message: "What is the intern's office number?",
         },
     ])
     .then((responses) => {
         var intern = new Intern(
-            responses.internName,
-            responses.internId,
-            responses.internEmail,
-            responses.internSchool
+            responses.name,
+            responses.id,
+            responses.email,
+            responses.school
         );
-        employees.push(manager)
+        employees.push(intern)
         employeeType()
     });
 }
