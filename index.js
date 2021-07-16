@@ -1,8 +1,7 @@
 //Import node modules
 const inquirer = require("inquirer");
 const fs = require("fs");
-const fileDirectory = path.resolve(__dirname, "dist");
-const filePath = path.join(fileDirectory, "index.html");
+const path = require("path");
 
 //Import classes
 const Engineer = require("./lib/Engineer");
@@ -32,6 +31,7 @@ function employeeType() {
                 addIntern()
             case "Finished":
                 finishApp()
+                break;
             default:
                 break;
         }
@@ -75,7 +75,7 @@ function addEngineer() {
 }
 
 //Questions for user if they selected "Manager"
-function addEngineer() {
+function addManager() {
     inquirer.prompt([
         {
             type: "input",
@@ -148,7 +148,7 @@ function addIntern() {
 
 //Finish App
 function finishApp() {
-    const makeHTML = generateHTML(employees);
+    const makeHTML = htmlGenerator(employees);
     fs.writeFile("./dist/index.html", makeHTML, (err) =>
         err ? console.log(err) : console.log("Your list of employees has been created!")
     );

@@ -2,8 +2,8 @@ const Manager = require("../lib/Manager");
 
 test("Ability to set office number using constructor function", () => {
     const officeNumber = "4231";
-    const employee = new Manager("Matt Johnson", 2, "mattjohnson@gmail.com", officeNumber);
-    expect(employee.officeNumber).toBe(officeNumber);
+    const employee = new Manager("Matt Johnson", 2, "mattjohnson@gmail.com", officeNum);
+    expect(employee.officeNum).toBe(officeNum);
   });
 
   test("getRole() should return Manager as a role", () => {
